@@ -1,0 +1,9 @@
+CC = g++
+CFLAGS = -Wall
+TARGET = test
+LDFLAGS += -L/home/jack/Aquila/lib -L/home/jack/Aquila
+CPPFLAGS += -I/home/jack/Aquila/aquila-src/aquila
+LIBS = -lAquila -lOoura_fft
+
+$(TARGET)  : $(TARGET).cpp Aquila.a Ooura_fft.a
+	$(CC) $(CFLAGS) $(TARGET).cpp $(LIBS) -std=c++1y -o $(TARGET)
