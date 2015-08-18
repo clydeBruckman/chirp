@@ -35,6 +35,7 @@ int main()
 	// just get this much working.
 
 	// where does fft Get its freq values from???
+	// oh: "sum.toArray()."
 
 	auto fft = Aquila::FftFactory::getFft(SIZE);
 	Aquila::SpectrumType spectrum = fft->fft(sum.toArray());
@@ -51,9 +52,9 @@ int main()
 
 	std::transform(
 		std::begin(spectrum),
-		std::end(spectrum),
-		std::begin(inverse),
-		std::begin(spectrum),
+		std::end(spectrum), // is this really the most efficient
+		std::begin(inverse),// way of multiplying a spectrum by -1?
+		std::begin(spectrum),// most likely not.
 		[] (Aquila::ComplexType x, Aquila::ComplexType y) {return x * y}
 	);
 	plt.setTitle("Flipped Signal");
