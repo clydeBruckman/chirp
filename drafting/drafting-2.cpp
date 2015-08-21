@@ -1,6 +1,6 @@
 #include "aquila/global.h"
 #include "aquila/transform/FftFactory.h"
-#include "aquila/tools/TextPlot.h"
+#include "aquila/tools/TextPlot.h" // probably not for the Whole thing.
 #include <algorithm>
 #include <functional>
 #include <memory>
@@ -15,27 +15,19 @@ int main() {
 	Aquila::SignalSource cmic; // control
 	Aquila::SignalSource mic0, mic1, mic2, mic3;
 
-	// GET FILE STUFF
+	// ASSIGN ALL READINGS TO VARS
+	//this will require a review of file-io C++
+
 	cmic.SignalSource(/*double vector*/, /*sample frequency rate -- check Arduino */);
 			//  ^ fp needed here.
-	//
 
 	auto fft = Aquila::FftFactory::getFft(SIZE);
-		// scope resolution w/ Function? ^
-
-	//int inverse(double amp) {
-	//	return amp * -1;
-	//}
 
 	Aquila::SpectrumType cspec = fft->fft(cmic.toArray());
 
-	// TWO WAYS (PICK ONE!)
-	//std::for_each(cspec.begin(), cspec.end(), &inverse); // inverse noise spectrum.
-	// ^ way 1: "for_each"
-	for (double amp : cspec) {
-		amp *= -1; } // <Michael-approved.
-	// ^ way 2: range-based for loop
-	// (does this work?)
+	for (/*ComplexType syntax*/ amp : cspec) {
+		amp *= -1; } // except it ain't double, it's ComplexType.
+
 
 	// SpectrumType is a vector of double-vectors.
 	// why?
