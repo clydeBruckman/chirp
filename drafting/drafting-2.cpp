@@ -23,20 +23,17 @@ int main() {
 	auto fft = Aquila::FftFactory::getFft(SIZE);
 		// scope resolution w/ Function? ^
 
-	int inverse(double amp) {
-		return amp * -1;
-	}
+	//int inverse(double amp) {
+	//	return amp * -1;
+	//}
 
 	Aquila::SpectrumType cspec = fft->fft(cmic.toArray());
 
 	// TWO WAYS (PICK ONE!)
-
-	std::for_each(cspec.begin(), cspec.end(), &inverse); // inverse noise spectrum.
+	//std::for_each(cspec.begin(), cspec.end(), &inverse); // inverse noise spectrum.
 	// ^ way 1: "for_each"
-
 	for (double amp : cspec) {
 		amp *= -1; } // <Michael-approved.
-
 	// ^ way 2: range-based for loop
 	// (does this work?)
 
