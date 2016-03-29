@@ -19,7 +19,7 @@ static void apply_window_to_fft_buffer(void *buffer, const void *window)
 
 	for (int i = 0; i < 1024; i++) {
 		int32_t val = *buf * *win++;
-		*buf = val >> 15;
+		*buf = val >> 15; // from Q31 to Q15
 		buf += 2;
 	}
 }
@@ -38,23 +38,24 @@ void AudioAnalyzeFFT1024::update(void)
     state = 1;
     break;
   case 1:
-    blocklist[1] = block;
-    state = 2;
-    break;
-  case 2:
+    blocklist[1] = block; // why did I take two blocks before ?
+    state = 2;            // investigate resolution and forum
+    break;                // to shed light on cases and blocks
+  case 2:                 // why is it done this way?
     blocklist[2] = block;
+
     for(int i = 0; i < 9; i++){
-      double  decimated_buffer[128];
+      double  decimated_buffer[128]; // should this be a queue object?
       int counter = 0;
       int decimated_index = 0;
 
       while( blocklist[i]->data ) {
-	audio_block_t *cycle = &blocklist[i]->data
-	if( (counter % 22) = 0 ) {
-	  decimated_buffer[decimated_index] = *cycle;
-	  decimated_index++;
-	}
-	cycle += SIZEOF(audio_block_t);
-	counter++;
-      }
-      copy_to_fft_buffer(buffer+0x000, decimated_buffer[0]);
+      	audio_block_t *cycle = &blocklist[i]->data;
+      	if( (counter % 22) = 0 ) {
+      	  decimated_buffer[decimated_index] = *cycle;
+      	  decimated_index++;
+      	}
+      	cycle += SIZEOF(audio_block_t);
+      	counter++;
+            }
+            copy_to_fft_buffer(buffer+0x000, decimated_buffer[0]);
